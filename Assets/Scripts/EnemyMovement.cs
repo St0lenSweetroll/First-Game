@@ -6,20 +6,51 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 1f;
     Rigidbody2D myRigidbody;
+    Animator myAnimator;
     public AudioSource myAudioSource1;
     public AudioSource myAudioSource2;
+    bool stopMovement;
     void Start()
     {
+        stopMovement = false;
         myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponent<Animator>();
     }
     void Update()
     {
-        myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+        if (stopMovement == false)
+        {
+            myRigidbody.velocity = new Vector2(moveSpeed, myRigidbody.velocity.y);
+        }
     }
     void OnTriggerEnter2D(Collider2D other)
     {
-        moveSpeed = -moveSpeed;
-        FlipEnemyFacing();
+        {
+            moveSpeed = -moveSpeed;
+            FlipEnemyFacing();
+        }
+    }
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Bullet"))
+        {
+            stopMovement = true;
+            StopMovement();
+            myRigidbody.freezeRotation = false;
+            myAnimator.enabled = false;
+            float randomDeathKickX = Random.Range(-20f, 20f);
+            float randomDeathKickY = Random.Range(0f, 20f);
+            Vector2 deathKick = new Vector2(randomDeathKickX, randomDeathKickY);
+            myRigidbody.velocity = deathKick;
+        }
+    }
+    void StopMovement()
+    {
+        if (stopMovement == true)
+        {
+            myRigidbody.velocity = new Vector2(0f, 0f);
+        }
+
     }
     void FlipEnemyFacing()
     {

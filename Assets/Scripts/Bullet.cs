@@ -11,6 +11,7 @@ public class Bullet : MonoBehaviour
     float xSpeed;
     Rigidbody2D rigidbodyofGoober;
     Animator animatorofGoober;
+    public float destroyDelay = 2f;
 
 
     void Start()
@@ -28,31 +29,29 @@ public class Bullet : MonoBehaviour
     {
         myRigidbody.velocity = new Vector2(xSpeed, 0f);
     }
-    void OnCollisionEnter2D(Collision2D other)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        myParticleSystem.Stop();
-        Invoke("DestroySelf", 2f);
+
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            myParticleSystem.Stop();
+            myRigidbody.velocity = Vector2.zero;
+            myRigidbody.simulated = false;
+            transform.parent = collision.transform;
+            StartCoroutine(DestroyWithDelay(collision.gameObject));
+        }
     }
-    void DestroySelf()
+        void OnTriggerEnter2D(Collider2D other)
     {
+        if (other.CompareTag("Hazards") || other.CompareTag("Mushroom"))
+        {
+            Destroy(gameObject);
+        }
+    }
+    IEnumerator DestroyWithDelay(GameObject enemy)
+    {
+        yield return new WaitForSeconds(destroyDelay);
+        Destroy(enemy);
         Destroy(gameObject);
-    }
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Enemy")
-        {
-            rigidbodyofGoober.freezeRotation = false;
-            animatorofGoober.enabled = false;
-            Destroy(other.gameObject, 2f);
-            Destroy(gameObject);
-        }
-        if (other.tag == ("Hazards"))
-        {
-            Destroy(gameObject);
-        }
-        if (other.tag == ("Mushroom"))
-        {
-            Destroy(gameObject);
-        }
     }
 }
