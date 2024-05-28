@@ -27,7 +27,7 @@ TagManager:
   - Water
   - Bullets
   - Mushroom
-  - 
+  - Interactables
   - 
   - 
   - 
@@ -70,6 +70,9 @@ TagManager:
     locked: 0
   - name: Bullets
     uniqueID: 1978265321
+    locked: 0
+  - name: Interactables
+    uniqueID: 1524769395
     locked: 0
   - name: Enemies
     uniqueID: 2248627065

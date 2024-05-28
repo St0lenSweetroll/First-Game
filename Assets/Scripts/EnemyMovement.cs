@@ -9,6 +9,7 @@ public class EnemyMovement : MonoBehaviour
     Animator myAnimator;
     public AudioSource myAudioSource1;
     public AudioSource myAudioSource2;
+    [SerializeField] private string newLayerName = "Default";
     bool stopMovement;
     void Start()
     {
@@ -34,14 +35,7 @@ public class EnemyMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            stopMovement = true;
-            StopMovement();
-            myRigidbody.freezeRotation = false;
-            myAnimator.enabled = false;
-            float randomDeathKickX = Random.Range(-20f, 20f);
-            float randomDeathKickY = Random.Range(0f, 20f);
-            Vector2 deathKick = new Vector2(randomDeathKickX, randomDeathKickY);
-            myRigidbody.velocity = deathKick;
+            Die();
         }
     }
     void StopMovement()
@@ -56,5 +50,18 @@ public class EnemyMovement : MonoBehaviour
     {
         transform.localScale = new Vector2(-(Mathf.Sign(myRigidbody.velocity.x)), 1f);
 
+    }
+    void Die()
+    {
+        stopMovement = true;
+        StopMovement();
+        myRigidbody.freezeRotation = false;
+        myAnimator.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("Default");
+        float randomDeathKickX = Random.Range(-20f, 20f);
+        float randomDeathKickY = Random.Range(0f, 20f);
+        Vector2 deathKick = new Vector2(randomDeathKickX, randomDeathKickY);
+        myRigidbody.velocity = deathKick;
+        Destroy(gameObject, 2f);
     }
 }

@@ -31,8 +31,12 @@ public class Bullet : MonoBehaviour
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
-
-        if (collision.gameObject.CompareTag("Enemy"))
+        if (collision.gameObject.CompareTag("Platform") || collision.gameObject.CompareTag("Mushroom") || collision.gameObject.CompareTag("Hazards"))
+        {
+            myParticleSystem.Stop();
+            Destroy(gameObject, 2f);
+        }
+            if (collision.gameObject.CompareTag("Enemy"))
         {
             myParticleSystem.Stop();
             myRigidbody.velocity = Vector2.zero;
@@ -41,9 +45,9 @@ public class Bullet : MonoBehaviour
             StartCoroutine(DestroyWithDelay(collision.gameObject));
         }
     }
-        void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.CompareTag("Hazards") || other.CompareTag("Mushroom"))
+        if (other.CompareTag("Hazards"))
         {
             Destroy(gameObject);
         }

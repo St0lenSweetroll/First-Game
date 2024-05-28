@@ -51,7 +51,7 @@ GameObject:
   - component: {fileID: 1786277469}
   m_Layer: 8
   m_Name: Lario
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -132,7 +132,7 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -274104171
-  m_SortingLayer: 9
+  m_SortingLayer: 11
   m_SortingOrder: 0
   m_Sprite: {fileID: 1681107975, guid: 95f39154901b8a740acbc1221c37f7e0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -231,6 +231,7 @@ MonoBehaviour:
   bullet: {fileID: 8339251334747786413, guid: 08feb7e9d3321bd4ebb41ceb1fa19b08, type: 3}
   gun: {fileID: 1841292592}
   mushroomKick: 23
+  fireRate: 1
 --- !u!61 &6163696038432050093
 BoxCollider2D:
   m_ObjectHideFlags: 0

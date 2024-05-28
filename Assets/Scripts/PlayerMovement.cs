@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] GameObject bullet;
     [SerializeField] Transform gun;
     [SerializeField] float mushroomKick = 10f;
+    [SerializeField] float fireRate = 0.5f;
+    private float lastShotTime = 0f;
 
     Vector2 moveInput;
     Rigidbody2D myRigidbody;
@@ -50,7 +52,6 @@ public class PlayerMovement : MonoBehaviour
         MushroomKick();
         Die();
         Drown();
-
     }
     void OnMove(InputValue value)
     {
@@ -84,7 +85,11 @@ public class PlayerMovement : MonoBehaviour
     void OnFire(InputValue value)
     {
         if (!isAlive) { return; }
-        Instantiate(bullet, gun.position, transform.rotation * Quaternion.Euler(0, 0, 135));
+        if (Time.time >= lastShotTime + fireRate)
+        {
+            Instantiate(bullet, gun.position, transform.rotation * Quaternion.Euler(0, 0, 135));
+            lastShotTime = Time.time;
+        }
     }
     void FlipSprite()
     {
@@ -115,8 +120,9 @@ public class PlayerMovement : MonoBehaviour
     void MushroomKick()
     {
         if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Mushroom")) && !Input.GetKey(KeyCode.S))
-
-        myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, mushroomKick);
+        {
+            myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, mushroomKick);
+        }
         else
         {
             return;
@@ -137,12 +143,14 @@ public class PlayerMovement : MonoBehaviour
             myBodyCollider.sharedMaterial = null;
             mySpriteRenderer.color = Color.red;
             myAudioSource.Play();
+            FindObjectOfType<GameSession>().ProcessPlayerDeath();
         }
     }
     void Drown()
     {
-        if (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
+        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Water")))
         {
+            Debug.Log("HI");
             isAlive = false;
             myAnimator.SetTrigger("Dying");
             myRigidbody.freezeRotation = false;
