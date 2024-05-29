@@ -12,8 +12,6 @@ public class Bullet : MonoBehaviour
     Rigidbody2D rigidbodyofGoober;
     Animator animatorofGoober;
     public float destroyDelay = 2f;
-
-
     void Start()
     {
         myRigidbody = GetComponent<Rigidbody2D>();
@@ -40,9 +38,13 @@ public class Bullet : MonoBehaviour
         {
             myParticleSystem.Stop();
             myRigidbody.velocity = Vector2.zero;
-            myRigidbody.simulated = false;
+            gameObject.SetActive(false);
             transform.parent = collision.transform;
-            StartCoroutine(DestroyWithDelay(collision.gameObject));
+            if (gameObject.activeSelf)
+            {
+                StartCoroutine(DestroyWithDelay(collision.gameObject));
+            }
+            
         }
     }
     void OnTriggerEnter2D(Collider2D other)

@@ -119,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void MushroomKick()
     {
-        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Mushroom")) && !Input.GetKey(KeyCode.S))
+        if (!Input.GetKey(KeyCode.S) && (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Mushroom")) || myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Mushroom"))))
         {
             myRigidbody.velocity = new Vector2(myRigidbody.velocity.x, mushroomKick);
         }
@@ -130,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
     }
     void Die()
     {
-        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")) | Input.GetKey(KeyCode.L))
+        if (myFeetCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards")) | Input.GetKey(KeyCode.L) | (myBodyCollider.IsTouchingLayers(LayerMask.GetMask("Enemies", "Hazards"))))
         {
             isAlive = false;
             myAnimator.SetTrigger("Dying");
