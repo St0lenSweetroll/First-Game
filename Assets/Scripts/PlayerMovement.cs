@@ -72,7 +72,10 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-        myRigidbody.velocity += new Vector2(0f, jumpSpeed);
+        else
+        {
+            myRigidbody.velocity += new Vector2(0f, jumpSpeed);
+        }
     }
     void Run()
     {
